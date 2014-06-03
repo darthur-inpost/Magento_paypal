@@ -32,9 +32,11 @@
 </div>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 
+<!-- InPost UK.sn -->
 <?
 $shipping_inpostparcels = Mage::registry('inpostparcelsData');
 ?>
+<!-- InPost UK.en -->
 
 <?php if ($this->getShippingAddress()): ?>
 <div class="info-set col2-set">
@@ -104,6 +106,7 @@ $shipping_inpostparcels = Mage::registry('inpostparcelsData');
                 <?php endif; ?>
             </div>
 	</div>
+<!-- InPost.sn -->
 	<div id="inpost_locker_div" style="display:none;">
         <script type="text/javascript" src="https://geowidget.inpost.co.uk/dropdown.php?field_to_update=name&field_to_update2=address&user_function=user_function"></script>
 <script type="text/javascript">
@@ -199,6 +202,7 @@ jQuery(document).ready(function(){
 </script>
 
 	</div>
+<!-- InPost.en -->
     </div>
 </div>
 <?php endif; ?>
@@ -236,6 +240,7 @@ jQuery(document).ready(function(){
 <form method="post" id="order_review_form" action="<?php echo $this->getUrl($this->getPaypalActionPrefix().'/express/placeOrder') ?>">
     <div class="buttons-set buttons-set-order" id="review-buttons-container">
 
+	<!-- InPost.sn -->
 	<!-- Hidden Fields, allow us to save details -->
 	<input type="hidden" name="inpost_hidden_machine" id="inpost_hidden_machine" value="daz_01" />
 	<input type="hidden" name="inpost_hidden_mobile" id="inpost_hidden_mobile" value="daz_02" />
@@ -247,6 +252,9 @@ jQuery(document).ready(function(){
 	<button id="check_data_fields" name="check_data_fields" onClick="return check_fields();" class="button" >
 		<span><span><?php echo $this->__('Place an Order') ?></span></span></button>
 
+	<!-- InPost.en -->
+	<!-- The following line gets style="display:none;"
+		to prevent it from showing-->
 	<button id="review_button" value="<?php echo $this->__('Place an Order') ?>" title="<?php echo $this->__('Place an Order') ?>"
 class="button btn-checkout" style="display:none;"><span><span><?php echo $this->__('Place an Order') ?></span></span></button>
         <button type="submit" id="review_submit" value="<?php echo $this->__('Place an Order') ?>" title="<?php echo $this->__('Place an Order') ?>" class="button btn-checkout"><span><span><?php echo $this->__('Place an Order') ?></span></span></button>
@@ -275,6 +283,9 @@ if (virtualship == 1){
 PayPalExpressAjax.addPleaseWait($('review-please-wait'));
 //]]>
 
+//**********
+// InPost.sn
+//**********
 ///
 // check_fields
 //
@@ -359,5 +370,8 @@ jQuery(document).ready(function() {
 		}
 	});
 });
+//**********
+// InPost.en
+//**********
 
 </script>
