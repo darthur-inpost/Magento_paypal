@@ -13,4 +13,7 @@ The file, review.phtml, has been annotated to show the changes that have been ma
 
 It should exist in a directory structure similar to the following:-
 
-	app/design/frontend/default/*Your Template*/template/paypal/express/review.phtml
+	app/design/frontend/default/<Your Template>/template/paypal/express/review.phtml
+
+Always remember that the default Magento files could be overwritten during an update so always use a templated file to edit / change.
+
