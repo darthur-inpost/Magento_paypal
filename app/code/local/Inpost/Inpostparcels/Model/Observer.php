@@ -234,34 +234,6 @@ class Inpost_Inpostparcels_Model_Observer extends Varien_Object
 	}
 
 	///
-	// saveQuoteAfter
-	//
-	// This does not get the order details. Simply return.
-	//
-	public function saveQuoteAfter($evt)
-	{
-		return;
-
-		$order = $evt->getOrder();
-		$quote = $evt->getQuote();
-
-		if($quote->getInpostparcelsData())
-		{
-			$var = $quote->getInpostparcelsData();
-
-			if(!empty($var))
-			{
-				$model = Mage::getModel('inpostparcels/inpostparcels');
-				$model->setParcelSourceMachineId($var['parcel_source_machine_id']);
-				$model->setParcelReceiverPhone($var['parcel_receiver_phone']);
-				$model->setQuoteId($quote->getId());
-				$model->setOrderId($quote->getOrderId());
-				$ret = $model->save();
-			}
-		}
-	}
-
-	///
 	// salesOrderShipmentSaveAfter
 	//
 	public function salesOrderShipmentSaveAfter($evt)
