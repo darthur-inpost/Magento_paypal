@@ -27,6 +27,75 @@
  *
  */
 ?>
+<!-- InPost.sn -->
+<?php
+	$machine_params = array();
+	switch(Mage::helper('inpostparcels/data')->getCurrentApi())
+	{
+		case 'PL':
+			$machine_params['payment_available'] = true;
+			break;
+		case 'UK':
+			$machine_params['status'] = "Operating";
+			break;
+		default:
+			break;
+	}
+
+	$allMachines = Mage::helper('inpostparcels/data')->connectInpostparcels(
+		array(
+			'url' => Mage::getStoreConfig('carriers/inpostparcels/api_url').'machines',
+			'methodType' => 'GET',
+			'params' => $machine_params
+		)
+	);
+	
+	$addr = $this->getShippingAddress();
+	$city = '';
+
+	if($addr != null)
+	{
+		$city = $addr->getCity();
+	}
+
+	$parcelTargetAllMachinesId     = array();
+	$parcelTargetAllMachinesDetail = array();
+	$parcelTargetMachinesId        = array();
+
+	if(is_array(@$allMachines['result']) && !empty($allMachines['result']))
+	{
+		foreach($allMachines['result'] as $key => $machine)
+		{
+			$parcelTargetAllMachinesId[$machine->id] = $machine->id .
+				', ' . @$machine->address->city . ', ' .
+				@$machine->address->street;
+
+			$parcelTargetAllMachinesDetail[$machine->id] = array(
+				'id' => $machine->id,
+				'address' => array(
+				'building_number' => @$machine->address->building_number,
+				'flat_number' => @$machine->address->flat_number,
+				'post_code' => @$machine->address->post_code,
+				'province' => @$machine->address->province,
+				'street' => @$machine->address->street,
+				'city' => @$machine->address->city
+				)
+			);
+
+			// Now check to see if it is a local machine to the
+			// shipping city.
+			if(@$machine->address->city == $city)
+			{
+				$parcelTargetMachinesId[$machine->id] = $machine->id .
+					', ' . @$machine->address->city . ', ' .
+					@$machine->address->street;
+
+			}
+		}
+	}
+?>
+<!-- InPost.en -->
+
 <div class="page-title">
     <h1><?php echo $this->__('Review Order') ?></h1>
 </div>
@@ -36,6 +105,12 @@
 <?
 $shipping_inpostparcels = Mage::registry('inpostparcelsData');
 ?>
+
+<select name="hidden_machine_list" id="hidden_machine_list" style="display:none;">
+<?php foreach($parcelTargetAllMachinesDetail as $key => $value): ?>
+<option value='<?php echo $key; ?>'><?php echo $value['address']['city'] . ';' . $value['address']['street'] . ';' . $value['address']['building_number'] . ';';?></option>
+<?php endforeach; ?>
+</select>
 <!-- InPost UK.en -->
 
 <?php if ($this->getShippingAddress()): ?>
@@ -112,8 +187,6 @@ $shipping_inpostparcels = Mage::registry('inpostparcelsData');
 <script type="text/javascript">
 function user_function(value)
 {
-	//alert('Address = ' + value);
-
 	var address = value.split(';');
 	//document.getElementById('town').value=address[1];
 	//document.getElementById('street').value=address[2]+address[3];
@@ -149,12 +222,15 @@ function user_function(value)
 
 		<!-- User InPost Fields -->
 		<select class="required-entry" id="shipping_inpostparcels" name="shipping_inpostparcels[parcel_target_machine_id]">
-                	<option value='' selected=selected>no terminals in your city</option>
+				<option value=''><?php echo $this->__('Please Select a Locker'); ?></option>
+                <?php foreach($parcelTargetMachinesId as $key => $parcelTargetMachineId): ?>
+			<option value='<?php echo $key ?>'><?php echo $parcelTargetMachineId; ?></option>
+                <?php endforeach; ?>
 		</select>
 		<br />
-        	<a href="#" onClick="openMap(); return false;">Click Here to Select a Terminal</a>
+                	<a href="#" onClick="openMap(); return false;"><?php echo $this->__('Map')?></a>
 		
-	<!-- &nbsp; | &nbsp; <input type="checkbox" name="show_all_machines"> Show terminals in other cities -->
+	&nbsp; | &nbsp; <input type="checkbox" name="show_all_machines"><?php echo $this->__('Show terminals in other cities') ?> 
 
         	<br />
         	<label for="inpostparcels_phone" style="color:red;" class="required">*Mobile e.g. 523045856</label>
@@ -169,16 +245,20 @@ jQuery(document).ready(function(){
 
 	if(machines_list_type == true)
 	{
-            //alert('all machines');
             var machines = {
-                '' : 'Select Machine..',
+                '' : '<?php echo $this->__('Select Machine..') ?>',
+            <?php foreach($parcelTargetAllMachinesId as $key => $parcelTargetAllMachineId): ?>
+                '<?php echo $key ?>' : '<?php echo addslashes($parcelTargetAllMachineId) ?>',
+            <?php endforeach; ?>
                        };
 	}
 	else
 	{
-            //alert('criteria machines');
             var machines = {
-                '' : 'Select Machine..',
+                '' : '<?php echo $this->__('Select Machine..') ?>',
+            <?php foreach($parcelTargetMachinesId as $key => $parcelTargetMachineId): ?>
+                '<?php echo $key ?>' : '<?php echo addslashes($parcelTargetMachineId) ?>',
+            <?php endforeach; ?>			
                         };
         }
 
@@ -197,6 +277,14 @@ jQuery(document).ready(function(){
             jQuery("#shipping_form_inpostparcels_inpostparcels").css("display","none");
         }
     });
+	jQuery('#shipping_inpostparcels').change(function(){
+		// Check and set the hidden fields for the machine's data
+		// hidden_machine_list
+		jQuery('[name=hidden_machine_list]').val(
+			jQuery('#shipping_inpostparcels').val() );
+
+		jQuery('#address').val(jQuery("#hidden_machine_list option:selected" ).text() );
+	});
 });
 
 </script>
@@ -317,9 +405,6 @@ function check_fields()
 		jQuery('#address').val()
 	);
 
-	// Set a cookie that we can retrieve later.
-	jQuery.cookie('shipping_inpostparcels', jQuery('#shipping_inpostparcels').val());
-
 	// We are good to submit
 	jQuery( "#review_button" ).submit();
 	return true;
@@ -358,7 +443,6 @@ jQuery(document).ready(function() {
 	}
 
 	jQuery('#shipping_method').change(function() {
-		//alert('in here ' + jQuery('#shipping_method').val());
 
 		if(jQuery('#shipping_method').val() == 'inpostparcels_inpostparcels')
 		{
