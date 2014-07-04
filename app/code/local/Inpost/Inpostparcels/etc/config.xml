@@ -93,6 +93,7 @@
                 </observers>
 	    </sales_order_shipment_save_after>
 
+	    <!-- PayPal express change SN -->
             <sales_quote_save_before>
                <!-- Event Called Before Quote Object is saved -->
                <observers>
@@ -103,6 +104,7 @@
                   </save_before>
                </observers>
             </sales_quote_save_before>
+	    <!-- PayPal express change EN -->
 	    
         </events>
 

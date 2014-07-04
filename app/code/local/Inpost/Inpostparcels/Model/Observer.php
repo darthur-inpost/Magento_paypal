@@ -103,6 +103,7 @@ class Inpost_Inpostparcels_Model_Observer extends Varien_Object
 			$inpostparcelsModel->save();
 			//Mage::log(var_export($data, 1) . '------', null, 'save_order_after.log');
 		}
+		// PayPal change SN
 		else
 		{
 			// We don't have the standard one-page checkout data
@@ -158,8 +159,8 @@ class Inpost_Inpostparcels_Model_Observer extends Varien_Object
 				$inpostparcelsModel->setApiSource(Mage::helper('inpostparcels/data')->getCurrentApi());
 				$inpostparcelsModel->save();
 			}
-
 		}
+		// PayPal change EN
 	}
 
 	///
@@ -178,6 +179,7 @@ class Inpost_Inpostparcels_Model_Observer extends Varien_Object
 		}
 	}
 
+	// PayPal change SN
 	///
 	// loadQuoteAfter
 	//
@@ -203,6 +205,7 @@ class Inpost_Inpostparcels_Model_Observer extends Varien_Object
 			}
 		}
 	}
+	// PayPal change EN
 
 	///
 	// saveQuoteBefore
