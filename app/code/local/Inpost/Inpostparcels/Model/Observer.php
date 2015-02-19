@@ -179,7 +179,6 @@ class Inpost_Inpostparcels_Model_Observer extends Varien_Object
 		}
 	}
 
-	// PayPal change SN
 	///
 	// loadQuoteAfter
 	//
@@ -205,8 +204,8 @@ class Inpost_Inpostparcels_Model_Observer extends Varien_Object
 			}
 		}
 	}
-	// PayPal change EN
 
+	// PayPal change SN
 	///
 	// saveQuoteBefore
 	//
@@ -235,6 +234,7 @@ class Inpost_Inpostparcels_Model_Observer extends Varien_Object
 			$quote->setInpostparcelsData($data);
 		}
 	}
+	// PayPal change EN
 
 	///
 	// salesOrderShipmentSaveAfter
