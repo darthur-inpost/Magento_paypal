@@ -24,7 +24,7 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
-<!-- Inpst.sn -->
+<!-- Inpost.sn -->
 <?php
 	$machine_params = array();
 	switch(Mage::helper('inpostparcels/data')->getCurrentApi())
@@ -178,7 +178,7 @@ $shipping_inpostparcels = Mage::registry('inpostparcelsData');
                 <?php endif; ?>
             </div>
 	</div>
-<!-- Inpst.sn -->
+<!-- Inpost.sn -->
 	<div id="inpost_locker_div" style="display:none;">
         <script type="text/javascript" src="https://geowidget.inpost.co.uk/dropdown.php?field_to_update=name&field_to_update2=address&user_function=user_function"></script>
 <script type="text/javascript">
@@ -236,11 +236,12 @@ function user_function(value)
 		(07)<input type="text" name="shipping_inpostparcels[receiver_phone]" id="inpostparcels_phone" class="validate-number minimum-length-9 maximum-length-9 inpostparcels_phone" value="" maxlength="9" />
 		</span>
 <script type="text/javascript">
+var $j2 = jQuery.noConflict();
 
-jQuery(document).ready(function(){
+$j2(document).ready(function(){
 
-    jQuery('input[type="checkbox"][name="show_all_machines"]').click(function(){
-        var machines_list_type = jQuery(this).is(':checked');
+    $j2('input[type="checkbox"][name="show_all_machines"]').click(function(){
+        var machines_list_type = $j2(this).is(':checked');
 
 	if(machines_list_type == true)
 	{
@@ -261,33 +262,33 @@ jQuery(document).ready(function(){
                         };
         }
 
-        jQuery('#shipping_inpostparcels option').remove();
-        jQuery.each(machines, function(val, text) {
-            jQuery('#shipping_inpostparcels').append(
-                    jQuery('<option></option>').val(val).html(text)
+        $j2('#shipping_inpostparcels option').remove();
+        $j2.each(machines, function(val, text) {
+            $j2('#shipping_inpostparcels').append(
+                    $j2('<option></option>').val(val).html(text)
             );
         });
     });
 
-    jQuery('input[type="radio"][name="shipping_method"]').click(function(){
-        if(jQuery("#s_method_inpostparcels_inpostparcels").is(":checked")){
-            jQuery("#shipping_form_inpostparcels_inpostparcels").css("display");
+    $j2('input[type="radio"][name="shipping_method"]').click(function(){
+        if($j2("#s_method_inpostparcels_inpostparcels").is(":checked")){
+            $j2("#shipping_form_inpostparcels_inpostparcels").css("display");
         }else{
-            jQuery("#shipping_form_inpostparcels_inpostparcels").css("display","none");
+            $j2("#shipping_form_inpostparcels_inpostparcels").css("display","none");
         }
     });
-	jQuery('#shipping_inpostparcels').change(function(){
+	$j2('#shipping_inpostparcels').change(function(){
 		// Check and set the hidden fields for the machine's data
 		// hidden_machine_list
-		jQuery('[name=hidden_machine_list]').val(
-			jQuery('#shipping_inpostparcels').val() );
+		$j2('[name=hidden_machine_list]').val(
+			$j2('#shipping_inpostparcels').val() );
 
-		jQuery('#address').val(jQuery("#hidden_machine_list option:selected" ).text() );
+		$j2('#address').val($j2("#hidden_machine_list option:selected" ).text() );
 	});
 });
 
 </script>
-<!-- Inpst.en -->
+<!-- Inpost.en -->
 
 	</div>
     </div>
@@ -327,7 +328,7 @@ jQuery(document).ready(function(){
 <form method="post" id="order_review_form" action="<?php echo $this->getUrl($this->getPaypalActionPrefix().'/express/placeOrder') ?>">
     <div class="buttons-set buttons-set-order" id="review-buttons-container">
 
-<!-- Inpst.sn -->
+<!-- Inpost.sn -->
 	<!-- Hidden Fields, allow us to save details -->
 	<input type="hidden" name="inpost_hidden_machine" id="inpost_hidden_machine" value="daz_01" />
 	<input type="hidden" name="inpost_hidden_mobile" id="inpost_hidden_mobile" value="daz_02" />
@@ -338,9 +339,9 @@ jQuery(document).ready(function(){
 
 	<button id="check_data_fields" name="check_data_fields" onClick="return check_fields();" class="button" >
 		<span><span><?php echo $this->__('Place an Order') ?></span></span></button>
-<!-- Inpst.en -->
+<!-- Inpost.en -->
 
-<!-- Inpst line changed added style="display:none;" -->
+<!-- Inpost line changed added style="display:none;" -->
 	<button id="review_button" value="<?php echo $this->__('Place an Order') ?>" title="<?php echo $this->__('Place an Order') ?>"
 class="button btn-checkout" style="display:none;"><span><span><?php echo $this->__('Place an Order') ?></span></span></button>
         <button type="submit" id="review_submit" value="<?php echo $this->__('Place an Order') ?>" title="<?php echo $this->__('Place an Order') ?>" class="button btn-checkout"><span><span><?php echo $this->__('Place an Order') ?></span></span></button>
@@ -369,7 +370,7 @@ if (virtualship == 1){
 PayPalExpressAjax.addPleaseWait($('review-please-wait'));
 //]]>
 
-// InPost.sn
+// Inpost.sn
 
 ///
 // check_fields
@@ -379,14 +380,14 @@ PayPalExpressAjax.addPleaseWait($('review-please-wait'));
 //
 function check_fields()
 {
-	if(jQuery('#shipping_method').val() == 'inpostparcels_inpostparcels')
+	if($j2('#shipping_method').val() == 'inpostparcels_inpostparcels')
 	{
-		if(jQuery('#shipping_inpostparcels').val() == '')
+		if($j2('#shipping_inpostparcels').val() == '')
 		{
 			alert('Please fill in the Locker ID.');
 			return false;
 		}
-		if(jQuery('#inpostparcels_phone').val() == '')
+		if($j2('#inpostparcels_phone').val() == '')
 		{
 			alert('Please fill in the mobile number.');
 			return false;
@@ -394,16 +395,16 @@ function check_fields()
 	}
 	// Save the Machine ID into our hidden field that is on the correct
 	// form.
-	jQuery('#inpost_hidden_machine').val(jQuery('#shipping_inpostparcels').val());
-	jQuery('#inpost_hidden_mobile').val(jQuery('#inpostparcels_phone').val());
+	$j2('#inpost_hidden_machine').val($j2('#shipping_inpostparcels').val());
+	$j2('#inpost_hidden_mobile').val($j2('#inpostparcels_phone').val());
 	// The address field contains the ';' seperate fields.
 	// e.g. Airdrie;Glen Road;1;false
-	jQuery('#inpost_hidden_details').val(
-		jQuery('#address').val()
+	$j2('#inpost_hidden_details').val(
+		$j2('#address').val()
 	);
 
 	// We are good to submit
-	jQuery( "#review_button" ).submit();
+	$j2( "#review_button" ).submit();
 	return true;
 }
 
@@ -412,7 +413,7 @@ function check_fields()
 //
 function showShipping()
 {
-	jQuery('#inpost_locker_div').show();
+	$j2('#inpost_locker_div').show();
 }
 
 ///
@@ -420,7 +421,7 @@ function showShipping()
 //
 function hideShippingAll()
 {
-	jQuery('#inpost_locker_div').hide();
+	$j2('#inpost_locker_div').hide();
 }
 
 ///
@@ -428,9 +429,9 @@ function hideShippingAll()
 //
 // @brief Display InPost fields as required.
 //
-jQuery(document).ready(function() {
+$j2(document).ready(function() {
 
-	if(jQuery('#shipping_method').val() == 'inpostparcels_inpostparcels')
+	if($j2('#shipping_method').val() == 'inpostparcels_inpostparcels')
 	{
 		showShipping();
 	}
@@ -439,9 +440,9 @@ jQuery(document).ready(function() {
 		hideShippingAll();
 	}
 
-	jQuery('#shipping_method').change(function() {
+	$j2('#shipping_method').change(function() {
 
-		if(jQuery('#shipping_method').val() == 'inpostparcels_inpostparcels')
+		if($j2('#shipping_method').val() == 'inpostparcels_inpostparcels')
 		{
 			showShipping();
 		}
@@ -451,6 +452,6 @@ jQuery(document).ready(function() {
 		}
 	});
 });
-// InPost.sn
+// Inpost.en
 
 </script>
